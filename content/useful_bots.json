@@ -1,0 +1,7 @@
+{
+  "chatbots": "@LivegramBot\n@LastSupportBot",
+  "posting": "@FleepBot\n@pumpDog_bot\n@BaslayBot\n@NotepostBot\n@telepostbot\n@AdmakerBot\n@ControllerBot\n@QuickQueue_bot",
+  "purchases": "@multitrackerbot\n@twisty_robot",
+  "cleaning": "@crosser_bot",
+  "feedbacks": "@LivegramBot\n@LastSupportBot"
+}
