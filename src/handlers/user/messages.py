@@ -105,18 +105,24 @@ class Messages:
         return '💎 Выберите категорию, которая вас интересует:'
 
     @staticmethod
-    async def get_purchases_chats() -> str:
+    async def get_purchases_chats(page_num: int = 0, separator: str = '///') -> str:
         storage = Json(Config.JsonFilePath.USEFUL_CHATS)
-        return await storage.get_data('purchases')
+        parts = (await storage.get_data('purchases')).split(separator)
+        index = abs(page_num) % len(parts)
+        index *= -1 if page_num < 0 else 1
+        return parts[index]
 
     @staticmethod
     def get_purchases_chats_photo() -> str:
         return 'https://telegra.ph/file/2dd57b9486aeb432c4a72.png'
 
     @staticmethod
-    async def get_sales_chats() -> str:
+    async def get_sales_chats(page_num: int = 0, separator: str = '///') -> str:
         storage = Json(Config.JsonFilePath.USEFUL_CHATS)
-        return await storage.get_data('sell')
+        parts = (await storage.get_data('sell')).split(separator)
+        index = abs(page_num) % len(parts)
+        index *= -1 if page_num < 0 else 1
+        return parts[index]
 
     @staticmethod
     def get_sales_chats_photo() -> str:

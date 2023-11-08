@@ -1,7 +1,7 @@
 from aiogram.utils.callback_data import CallbackData
 
 
-terms_nav_callback = CallbackData('terms_navigation', 'direction', 'current_term_number')
+nav_buttons_callback = CallbackData('buttons_navigation', 'category', 'direction', 'page_to_open')
 
 bots_nav_callback = CallbackData('bots_navigation', 'category')
 

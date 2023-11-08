@@ -40,32 +40,52 @@ class Keyboards:
         markup = InlineKeyboardMarkup(row_width=2)
 
         markup.add(InlineKeyboardButton("* Специалисты по TG *", callback_data="*")).row().add(
-            InlineKeyboardButton("👥 Манаги", callback_data=editing_callback_data.new(option='spec', category='managers')),
-            InlineKeyboardButton("👥 Закупщики", callback_data=editing_callback_data.new(option='spec', category='buyers')),
-            InlineKeyboardButton("👥 Дизайнеры", callback_data=editing_callback_data.new(option='spec', category='designers')),
+            InlineKeyboardButton("👥 Манаги",
+                                 callback_data=editing_callback_data.new(option='spec', category='managers')),
+            InlineKeyboardButton("👥 Закупщики",
+                                 callback_data=editing_callback_data.new(option='spec', category='buyers')),
+            InlineKeyboardButton("👥 Дизайнеры",
+                                 callback_data=editing_callback_data.new(option='spec', category='designers')),
             InlineKeyboardButton("👥 Кодеры", callback_data=editing_callback_data.new(option='spec', category='coders')),
-            InlineKeyboardButton("👥 Гаранты", callback_data=editing_callback_data.new(option='spec', category='guarantors')),
-            InlineKeyboardButton("👥 Контентщики", callback_data=editing_callback_data.new(option='spec', category='content_makers')),
-            InlineKeyboardButton("👥 Креативщики", callback_data=editing_callback_data.new(option='spec', category='creative')),
+            InlineKeyboardButton("👥 Гаранты",
+                                 callback_data=editing_callback_data.new(option='spec', category='guarantors')),
+            InlineKeyboardButton("👥 Контентщики",
+                                 callback_data=editing_callback_data.new(option='spec', category='content_makers')),
+            InlineKeyboardButton("👥 Креативщики",
+                                 callback_data=editing_callback_data.new(option='spec', category='creative')),
         )
+
         markup.add(InlineKeyboardButton("* Полезные боты *", callback_data="*")).row().add(
-            InlineKeyboardButton("💭 Для чатов", callback_data=editing_callback_data.new(option='bots', category='chatbots')),
-            InlineKeyboardButton("📢 Для постинга", callback_data=editing_callback_data.new(option='bots', category='posting')),
-            InlineKeyboardButton("🗑 Для чистки", callback_data=editing_callback_data.new(option='bots', category='cleaning')),
-            InlineKeyboardButton("💸 Для закупа", callback_data=editing_callback_data.new(option='bots', category='purchases')),
-            InlineKeyboardButton("🧑‍💻 Для обратной связи", callback_data=editing_callback_data.new(option='bots', category='feedbacks')),
+            InlineKeyboardButton("💭 Для чатов",
+                                 callback_data=editing_callback_data.new(option='bots', category='chatbots')),
+            InlineKeyboardButton("📢 Для постинга",
+                                 callback_data=editing_callback_data.new(option='bots', category='posting')),
+            InlineKeyboardButton("🗑 Для чистки",
+                                 callback_data=editing_callback_data.new(option='bots', category='cleaning')),
+            InlineKeyboardButton("💸 Для закупа",
+                                 callback_data=editing_callback_data.new(option='bots', category='purchases')),
+            InlineKeyboardButton("🧑‍💻 Для обратной связи",
+                                 callback_data=editing_callback_data.new(option='bots', category='feedbacks')),
         )
+
         markup.add(InlineKeyboardButton("* Биржи *", callback_data="*")).row().add(
-            InlineKeyboardButton("👷‍♂️ Биржи по продаже каналов", callback_data=editing_callback_data.new(option='stock_markets', category=''))
+            InlineKeyboardButton("👷‍♂️ Биржи по продаже каналов",
+                                 callback_data=editing_callback_data.new(option='stock_markets', category=''))
         )
+ 
         markup.add(InlineKeyboardButton("* Чаты *", callback_data="*")).row().add(
-            InlineKeyboardButton("💵 Покупка", callback_data=editing_callback_data.new(option='chats', category='purchases')),
+            InlineKeyboardButton("💵 Покупка",
+                callback_data=editing_callack_data.new(option='chats', category='purchases')),
             InlineKeyboardButton("💶 Продажа", callback_data=editing_callback_data.new(option='chats', category='sell')),
-            InlineKeyboardButton("🚨 Админские чаты", callback_data=editing_callback_data.new(option='chats', category='admin')),
+            InlineKeyboardButton("🚨 Админские чаты",
+                                 callback_data=editing_callback_data.new(option='chats', category='admin')),
         )
+
         markup.add(InlineKeyboardButton("* Полезные блоги *", callback_data="*")).row().add(
-            InlineKeyboardButton("📌 Полезные блоги", callback_data=editing_callback_data.new(option='blogs', category=''))
+            InlineKeyboardButton("📌 Полезные блоги",
+                                 callback_data=editing_callback_data.new(option='blogs', category=''))
         )
+
         return markup
 
 

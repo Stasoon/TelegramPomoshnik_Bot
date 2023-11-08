@@ -1,48 +1,37 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton
 from src.misc.enums import UsefulBotsCategory, SpecialistCategory
-from src.misc.callback_data import terms_nav_callback, bots_nav_callback, specialists_nav_callback
+from src.misc.callback_data import nav_buttons_callback, bots_nav_callback, specialists_nav_callback
 
 
 class Keyboards:
 
     back_to_menu_reply_button = KeyboardButton('🔙 Назад в меню 🔙')
 
-    # check_sub_button = InlineKeyboardButton('❓ Проверить ❓', callback_data='checksubscription')
-    #
-    # @classmethod
-    # def get_not_subbed_markup(cls, channels_to_sub_data) -> InlineKeyboardMarkup | None:
-    #     if len(channels_to_sub_data) == 0:
-    #         return None
-    #
-    #     channels_markup = InlineKeyboardMarkup(row_width=1)
-    #     [
-    #         channels_markup.add(InlineKeyboardButton(channel_data.get('title'), url=channel_data.get('url')))
-    #         for channel_data in channels_to_sub_data
-    #     ]
-    #     channels_markup.add(cls.check_sub_button)
-    #     return channels_markup
-
     @staticmethod
     def get_main_menu() -> ReplyKeyboardMarkup:
         markup = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
 
-        markup.add("📝 Термины в TG", "💸 CPM тематик",
-                   "📙Полезные чаты", "🙋Стоимость ПДП",
-                   "🤖 Полезные боты", "🤝 Специалисты по TG",
-                   "🔎 Каналы по поиску сотрудников", "👷‍♂️ Биржи по продаже каналов")
+        markup.add("💸 CPM тематик", "🙋Стоимость ПДП",
+                   "📝 Термины в TG", "📙Полезные чаты",
+                   "🤝 Специалисты по TG", "🔎 Каналы по поиску сотрудников",
+                   "👷‍♂️ Биржи по продаже каналов", "🤖 Полезные боты")
         markup.row("📌 Полезные блоги")
 
         return markup
 
     @staticmethod
-    def get_terms_navigation(current_term_number: int) -> InlineKeyboardMarkup:
+    def get_navigation_buttons(category: str, current_page_num: int) -> InlineKeyboardMarkup:
         markup = InlineKeyboardMarkup()
         markup.add(
             InlineKeyboardButton(
-                text='⬅', callback_data=terms_nav_callback.new(direction='prev', current_term_number=current_term_number)
+                text='⬅', callback_data=nav_buttons_callback.new(
+                    category=category, direction='prev', page_to_open=current_page_num - 1
+                )
             ),
             InlineKeyboardButton(
-                text='➡', callback_data=terms_nav_callback.new(direction='next', current_term_number=current_term_number)
+                text='➡', callback_data=nav_buttons_callback.new(
+                    category=category, direction='next', page_to_open=current_page_num + 1
+                )
             )
         )
         return markup

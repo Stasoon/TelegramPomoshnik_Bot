@@ -3,7 +3,7 @@ from aiogram.types import Message, CallbackQuery
 
 from src.database.user import create_user
 from src.utils import send_typing_action, throttle
-from src.misc import terms_nav_callback, bots_nav_callback, specialists_nav_callback
+from src.misc import nav_buttons_callback, bots_nav_callback, specialists_nav_callback
 from .messages import Messages
 from .kb import Keyboards
 
@@ -42,17 +42,17 @@ async def handle_telegram_terms_button(message: Message):
     await send_typing_action(message)
 
     text = Messages.get_telegram_term(0)
-    reply_markup = Keyboards.get_terms_navigation(0)
+    reply_markup = Keyboards.get_navigation_buttons(category='terms', current_page_num=0)
     await message.answer(text=text, reply_markup=reply_markup)
 
 
 @throttle(1.3)
-async def handle_telegram_terms_navigation_callback(callback: CallbackQuery, callback_data: dict):
-    current_term_number = int(callback_data.get('current_term_number'))
-    next_term_number = current_term_number + (1 if callback_data.get('direction') == 'next' else -1)
+async def handle_terms_navigation_buttons_callback(callback: CallbackQuery, callback_data: dict):
+    page_to_open_number = int(callback_data.get('page_to_open'))
+    category = callback_data.get('category')
+    reply_markup = Keyboards.get_navigation_buttons(current_page_num=page_to_open_number, category=category)
 
-    text = Messages.get_telegram_term(next_term_number)
-    reply_markup = Keyboards.get_terms_navigation(next_term_number)
+    text = Messages.get_telegram_term(number=page_to_open_number)
     await callback.message.edit_text(text=text, reply_markup=reply_markup)
 
 
@@ -74,16 +74,24 @@ async def handle_useful_chats_button(message: Message):
 @throttle()
 async def handle_purchases_button(message: Message):  # покупка
     await send_typing_action(message)
+    reply_markup = Keyboards.get_navigation_buttons(current_page_num=0, category='purchases_chats')
     await message.answer_photo(
-        caption=await Messages.get_purchases_chats(), photo=Messages.get_purchases_chats_photo()
+        caption=await Messages.get_purchases_chats(),
+        photo=Messages.get_purchases_chats_photo(),
+        reply_markup=reply_markup,
+        parse_mode='HTML'
     )
 
 
 @throttle()
 async def handle_sales_chats_button(message: Message):  # продажа
     await send_typing_action(message)
+    reply_markup = Keyboards.get_navigation_buttons(current_page_num=0, category='sells_chats')
     await message.answer_photo(
-        caption=await Messages.get_sales_chats(), photo=Messages.get_sales_chats_photo()
+        caption=await Messages.get_sales_chats(),
+        photo=Messages.get_sales_chats_photo(),
+        reply_markup=reply_markup,
+        parse_mode='HTML'
     )
 
 
@@ -91,6 +99,22 @@ async def handle_sales_chats_button(message: Message):  # продажа
 async def handle_admin_chats_button(message: Message):  # администраторские
     await send_typing_action(message)
     await message.answer(text=await Messages.get_admin_chats(), disable_web_page_preview=True)
+
+
+@throttle()
+async def handle_chats_navigation_buttons_callback(callback: CallbackQuery, callback_data: dict):
+    page_to_open_number = int(callback_data.get('page_to_open'))
+    category = callback_data.get('category')
+    reply_markup = Keyboards.get_navigation_buttons(current_page_num=page_to_open_number, category=category)
+
+    text = Messages.get_telegram_term(number=page_to_open_number)
+
+    if category == 'purchases_chats':
+        text = await Messages.get_purchases_chats(page_num=page_to_open_number)
+    elif category == 'sells_chats':
+        text = await Messages.get_sales_chats(page_num=page_to_open_number)
+
+    await callback.message.edit_caption(caption=text, reply_markup=reply_markup)
 
 
 # Стоимость ПДП
@@ -182,7 +206,7 @@ def register_user_handlers(dp: Dispatcher) -> None:
 
     # Термины
     dp.register_message_handler(handle_telegram_terms_button, lambda message: 'термины' in message.text.lower())
-    dp.register_callback_query_handler(handle_telegram_terms_navigation_callback, terms_nav_callback.filter())
+    dp.register_callback_query_handler(handle_terms_navigation_buttons_callback, nav_buttons_callback.filter(category='terms'))
 
     # CPM тематик
     dp.register_message_handler(handle_cpm_thematics_button, lambda message: 'cpm тематик' in message.text.lower())
@@ -195,6 +219,8 @@ def register_user_handlers(dp: Dispatcher) -> None:
     dp.register_message_handler(handle_purchases_button, lambda message: 'покупка' in message.text.lower())
     dp.register_message_handler(handle_sales_chats_button, lambda message: 'продажа' in message.text.lower())
     dp.register_message_handler(handle_admin_chats_button, lambda message: 'админские чаты' in message.text.lower())
+    dp.register_callback_query_handler(handle_chats_navigation_buttons_callback, nav_buttons_callback.filter(category='purchases_chats'))
+    dp.register_callback_query_handler(handle_chats_navigation_buttons_callback, nav_buttons_callback.filter(category='sells_chats'))
 
     # Полезные боты
     dp.register_message_handler(handle_useful_bots_button, lambda message: 'полезные боты' in message.text.lower())
