@@ -26,6 +26,8 @@ class Messages:
                 return await read_txt_file(Config.TxtFilePath.BLOGS)
             case 'stock_markets':
                 return await read_txt_file(Config.TxtFilePath.STOCK_MARKET)
+            case 'welcome_post':
+                return await read_txt_file(Config.TxtFilePath.WELCOME_POST)
 
 
 class Keyboards:
@@ -39,6 +41,9 @@ class Keyboards:
     def get_options_to_edit() -> InlineKeyboardMarkup:
         markup = InlineKeyboardMarkup(row_width=2)
 
+        markup.add(InlineKeyboardButton(
+            text='👋 ПРИВЕТСТВИЕ 👋', callback_data=editing_callback_data.new(option='welcome_post', category='')
+        )).row()
         markup.add(InlineKeyboardButton("* Специалисты по TG *", callback_data="*")).row().add(
             InlineKeyboardButton("👥 Манаги", callback_data=editing_callback_data.new(option='spec', category='managers')),
             InlineKeyboardButton("👥 Закупщики", callback_data=editing_callback_data.new(option='spec', category='buyers')),
@@ -114,6 +119,8 @@ class Handlers:
                 await rewrite_txt_file(Config.TxtFilePath.BLOGS, new_text=message_text)
             case 'stock_markets':
                 await rewrite_txt_file(Config.TxtFilePath.STOCK_MARKET, new_text=message_text)
+            case 'welcome_post':
+                await rewrite_txt_file(Config.TxtFilePath.WELCOME_POST, new_text=message_text)
 
         await message.answer('✅ Данные обновлены')
         await state.finish()

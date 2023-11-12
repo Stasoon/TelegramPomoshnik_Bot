@@ -18,6 +18,7 @@ class Config:
 
     class TxtFilePath:
         __directory_path = 'content'
+        WELCOME_POST: Final = f'{__directory_path}/welcome_post.txt'
         SUBSCRIBER_COST: Final = f'{__directory_path}/subscriber_cost.txt'
         STOCK_MARKET: Final = f'{__directory_path}/stock_markets.txt'
         BLOGS: Final = f'{__directory_path}/useful_blogs.txt'

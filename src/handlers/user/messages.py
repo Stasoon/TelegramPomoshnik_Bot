@@ -8,11 +8,9 @@ class Messages:
     # Статья со ссылками на фотографии: https://telegra.ph/Ishodniki-dlya-bota-pomoshchnika-Telegramm-09-11
 
     @staticmethod
-    def get_welcome_text(user_name: str = 'незнакомец') -> str:
-        return (
-            f'{text_formatting.hbold(f"👋 Приветствую, {user_name}!")} \n\n'
-            f'Это твой бот-помощник, предназначен для оказания помощи в телеграм.'
-        )
+    async def get_welcome_text(user_name: str = 'незнакомец') -> str:
+        text = await read_txt_file(Config.TxtFilePath.WELCOME_POST)
+        return text.format(user=user_name)
 
     @staticmethod
     def get_welcome_photo() -> str:
@@ -177,3 +175,4 @@ class Messages:
     @staticmethod
     async def get_useful_blogs() -> str:
         return await read_txt_file(Config.TxtFilePath.BLOGS)
+

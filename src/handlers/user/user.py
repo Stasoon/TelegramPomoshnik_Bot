@@ -23,7 +23,7 @@ async def handle_start_command(message: Message) -> None:
 
     # отправляем приветственное сообщение
     await message.answer_photo(
-        caption=Messages.get_welcome_text(message.from_user.first_name),
+        caption=await Messages.get_welcome_text(message.from_user.first_name),
         photo=Messages.get_welcome_photo(),
         reply_markup=Keyboards.get_main_menu()
     )
@@ -244,3 +244,4 @@ def register_user_handlers(dp: Dispatcher) -> None:
 
     # Полезные блоги
     dp.register_message_handler(handle_useful_blogs_button, lambda message: 'полезные блоги' in message.text.lower())
+
