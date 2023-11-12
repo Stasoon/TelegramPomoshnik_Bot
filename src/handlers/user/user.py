@@ -1,4 +1,5 @@
 from aiogram import Dispatcher
+from aiogram.dispatcher import FSMContext
 from aiogram.types import Message, CallbackQuery
 
 from src.database.user import create_user
@@ -11,7 +12,8 @@ from .kb import Keyboards
 # region Handlers
 
 @throttle()
-async def handle_start_command(message: Message) -> None:
+async def handle_start_command(message: Message, state: FSMContext) -> None:
+    await state.finish()
     await send_typing_action(message)
 
     # создаём пользователя
@@ -199,7 +201,7 @@ async def handle_useful_blogs_button(message: Message):
 
 def register_user_handlers(dp: Dispatcher) -> None:
     # обработчик команды /start
-    dp.register_message_handler(handle_start_command, commands=['start'])
+    dp.register_message_handler(handle_start_command, commands=['start'], state='*')
 
     # обработка кнопки Назад в меню
     dp.register_message_handler(handle_back_to_menu_button, lambda message: '🔙 Назад в меню 🔙' in message.text)
