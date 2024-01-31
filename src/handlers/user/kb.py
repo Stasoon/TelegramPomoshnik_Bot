@@ -11,11 +11,13 @@ class Keyboards:
     def get_main_menu() -> ReplyKeyboardMarkup:
         markup = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
 
-        markup.add("💸 CPM тематик", "🙋Стоимость ПДП",
-                   "📝 Термины в TG", "📙Полезные чаты",
-                   "🤝 Специалисты по TG", "🔎 Каналы по поиску сотрудников",
-                   "👷‍♂️ Биржи по продаже каналов", "🤖 Полезные боты")
-        markup.row("📌 Полезные блоги")
+        markup.add(
+            "📄 Термины в TG", "💸 CPM тематик",
+            "💬 Полезные чаты", "🤩 Стоимость ПДП",
+            "👨‍🏫 Специалисты по TG", "🔎 Поиск сотрудников",
+            "🤖 Полезные боты", "📌 Полезные блоги",
+        )
+        markup.row("💹 Биржи по продаже каналов",)
 
         return markup
 
@@ -24,12 +26,12 @@ class Keyboards:
         markup = InlineKeyboardMarkup()
         markup.add(
             InlineKeyboardButton(
-                text='⬅', callback_data=nav_buttons_callback.new(
+                text='◀', callback_data=nav_buttons_callback.new(
                     category=category, direction='prev', page_to_open=current_page_num - 1
                 )
             ),
             InlineKeyboardButton(
-                text='➡', callback_data=nav_buttons_callback.new(
+                text='▶', callback_data=nav_buttons_callback.new(
                     category=category, direction='next', page_to_open=current_page_num + 1
                 )
             )

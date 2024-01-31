@@ -10,11 +10,11 @@ class Messages:
     @staticmethod
     async def get_welcome_text(user_name: str = 'незнакомец') -> str:
         text = await read_txt_file(Config.TxtFilePath.WELCOME_POST)
-        return text.format(user=user_name)
+        return text.format(user=text_formatting.quote_html(user_name))
 
     @staticmethod
-    def get_welcome_photo() -> str:
-        return "https://telegra.ph/file/e56de1595ec404577f9fb.png"
+    def get_welcome_photo() -> str | None:
+        return None
 
     @staticmethod
     def get_main_menu():
@@ -23,7 +23,7 @@ class Messages:
     # Термины телеграм
     @staticmethod
     def get_telegram_term(number: int) -> str:
-        header = '📝 Термины в TG'
+        header = '📄 Термины в TG'
         terms = (
             '<b>ЦА:</b> целевая аудитория. ЦА называют группу людей, у которых есть потребность в продукте и '
             'возможность его купить. \n'
@@ -95,7 +95,7 @@ class Messages:
     # CPM тематика
     @staticmethod
     def get_cpm_thematics_photo() -> str:
-        return 'https://telegra.ph/file/222a63af66bada0a95454.png'
+        return 'https://telegra.ph/file/344bde2f65f55c83acb88.png'
 
     # Полезные чаты
     @staticmethod
@@ -149,7 +149,7 @@ class Messages:
     # Специалисты
     @staticmethod
     def get_specialists() -> str:
-        return '🛠 Какие специалисты вас интересуют?'
+        return '👨‍🏫 Какие специалисты вас интересуют?'
 
     @staticmethod
     async def get_specialist_category_description(specialist_category: str):
@@ -163,13 +163,8 @@ class Messages:
 
     # Поиск сотрудников
     @staticmethod
-    def get_employee_search_chats() -> str:
-        return ("<a href='https://t.me/birjatrudaleo'>Биржа труда | Chatileo</a> \n"
-                "<a href='https://t.me/job_t'>TJop | Биржа труда </a> \n"
-                "<a href='https://t.me/tg_chat1'>Работа и Вакансии</a> \n"
-                "<a href='https://t.me/+fMT5B0JQlbkwZTky'>Вакансии инста/тг</a> \n"
-                "<a href='https://t.me/obyavleniya_ad'>Админские Объявления</a> \n"
-                "<a href='https://t.me/vakansii_telega'>Вакансии в tg</a>")
+    async def get_employee_search_chats() -> str:
+        return await read_txt_file(Config.TxtFilePath.EMPLOYEES_SEARCH)
 
     # Блоги
     @staticmethod

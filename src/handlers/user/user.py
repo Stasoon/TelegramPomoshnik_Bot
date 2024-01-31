@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import Message, CallbackQuery
 
 from src.database.user import create_user
-from src.utils import send_typing_action, throttle
+from src.utils import send_typing_action
 from src.misc import nav_buttons_callback, bots_nav_callback, specialists_nav_callback
 from .messages import Messages
 from .kb import Keyboards
@@ -11,7 +11,6 @@ from .kb import Keyboards
 
 # region Handlers
 
-@throttle()
 async def handle_start_command(message: Message, state: FSMContext) -> None:
     await state.finish()
     await send_typing_action(message)
@@ -24,11 +23,13 @@ async def handle_start_command(message: Message, state: FSMContext) -> None:
     )
 
     # отправляем приветственное сообщение
-    await message.answer_photo(
-        caption=await Messages.get_welcome_text(message.from_user.first_name),
-        photo=Messages.get_welcome_photo(),
-        reply_markup=Keyboards.get_main_menu()
-    )
+    text = await Messages.get_welcome_text(message.from_user.first_name)
+    photo = Messages.get_welcome_photo()
+    markup = Keyboards.get_main_menu()
+    if photo:
+        await message.answer_photo(caption=text, photo=photo, reply_markup=markup)
+    else:
+        await message.answer(text=text, reply_markup=markup)
 
 
 async def handle_back_to_menu_button(message: Message):
@@ -39,7 +40,6 @@ async def handle_back_to_menu_button(message: Message):
 
 
 # Термины
-@throttle(1.3)
 async def handle_telegram_terms_button(message: Message):
     await send_typing_action(message)
 
@@ -48,7 +48,6 @@ async def handle_telegram_terms_button(message: Message):
     await message.answer(text=text, reply_markup=reply_markup)
 
 
-@throttle(1.3)
 async def handle_terms_navigation_buttons_callback(callback: CallbackQuery, callback_data: dict):
     page_to_open_number = int(callback_data.get('page_to_open'))
     category = callback_data.get('category')
@@ -59,7 +58,6 @@ async def handle_terms_navigation_buttons_callback(callback: CallbackQuery, call
 
 
 # CPM
-@throttle()
 async def handle_cpm_thematics_button(message: Message):
     await send_typing_action(message)
 
@@ -68,12 +66,10 @@ async def handle_cpm_thematics_button(message: Message):
 
 
 # Полезные чаты
-@throttle()
 async def handle_useful_chats_button(message: Message):
     await message.answer(text=Messages.get_choose_useful_chat_thematics(), reply_markup=Keyboards.get_useful_chats())
 
 
-@throttle()
 async def handle_purchases_button(message: Message):  # покупка
     await send_typing_action(message)
     reply_markup = Keyboards.get_navigation_buttons(current_page_num=0, category='purchases_chats')
@@ -85,7 +81,6 @@ async def handle_purchases_button(message: Message):  # покупка
     )
 
 
-@throttle()
 async def handle_sales_chats_button(message: Message):  # продажа
     await send_typing_action(message)
     reply_markup = Keyboards.get_navigation_buttons(current_page_num=0, category='sells_chats')
@@ -97,13 +92,11 @@ async def handle_sales_chats_button(message: Message):  # продажа
     )
 
 
-@throttle()
 async def handle_admin_chats_button(message: Message):  # администраторские
     await send_typing_action(message)
     await message.answer(text=await Messages.get_admin_chats(), disable_web_page_preview=True)
 
 
-@throttle()
 async def handle_chats_navigation_buttons_callback(callback: CallbackQuery, callback_data: dict):
     page_to_open_number = int(callback_data.get('page_to_open'))
     category = callback_data.get('category')
@@ -120,14 +113,12 @@ async def handle_chats_navigation_buttons_callback(callback: CallbackQuery, call
 
 
 # Стоимость ПДП
-@throttle()
 async def handle_subscriber_cost_button(message: Message):
     await send_typing_action(message)
-    await message.answer(text=await Messages.get_subscriber_costs())
+    await message.answer(text=await Messages.get_subscriber_costs(), parse_mode='HTML')
 
 
 # Полезные боты
-@throttle()
 async def handle_useful_bots_button(message: Message):
     await send_typing_action(message)
     await message.answer(
@@ -177,21 +168,20 @@ async def handle_specialists_navigation_callbacks(callback: CallbackQuery, callb
 
 
 # Биржи по продаже
-@throttle(rate=1.3)
 async def handle_stock_markets_button(message: Message):
     await send_typing_action(message)
     await message.answer(text=await Messages.get_stock_markets(), disable_web_page_preview=True)
 
 
 # Поиск сотрудников
-@throttle(rate=1.3)
+
 async def handle_employee_search_chats_button(message: Message):
     await send_typing_action(message)
-    await message.answer(text=Messages.get_employee_search_chats(), disable_web_page_preview=True)
+    text = await Messages.get_employee_search_chats()
+    await message.answer(text=text, disable_web_page_preview=True)
 
 
 # Полезные блоги
-@throttle(rate=1.3)
 async def handle_useful_blogs_button(message: Message):
     await send_typing_action(message)
     await message.answer(text=await Messages.get_useful_blogs(), disable_web_page_preview=True)
@@ -242,7 +232,7 @@ def register_user_handlers(dp: Dispatcher) -> None:
 
     # Поиск сотрудников
     dp.register_message_handler(handle_employee_search_chats_button,
-                                lambda message: 'каналы по поиску сотрудников' in message.text.lower())
+                                lambda message: 'поиск сотрудников' in message.text.lower())
 
     # Полезные блоги
     dp.register_message_handler(handle_useful_blogs_button, lambda message: 'полезные блоги' in message.text.lower())

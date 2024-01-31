@@ -28,6 +28,10 @@ class Messages:
                 return await read_txt_file(Config.TxtFilePath.STOCK_MARKET)
             case 'welcome_post':
                 return await read_txt_file(Config.TxtFilePath.WELCOME_POST)
+            case 'subscriber_cost':
+                return await read_txt_file(Config.TxtFilePath.SUBSCRIBER_COST)
+            case 'employees_search':
+                return await read_txt_file(Config.TxtFilePath.EMPLOYEES_SEARCH)
 
 
 class Keyboards:
@@ -44,6 +48,17 @@ class Keyboards:
         markup.add(InlineKeyboardButton(
             text='👋 ПРИВЕТСТВИЕ 👋', callback_data=editing_callback_data.new(option='welcome_post', category='')
         )).row()
+
+        markup.add(InlineKeyboardButton("* Чаты *", callback_data="*")).row().add(
+            InlineKeyboardButton("💵 Покупка", callback_data=editing_callback_data.new(option='chats', category='purchases')),
+            InlineKeyboardButton("💶 Продажа", callback_data=editing_callback_data.new(option='chats', category='sell')),
+            InlineKeyboardButton("🚨 Админские чаты", callback_data=editing_callback_data.new(option='chats', category='admin')),
+        )
+
+        markup.add(InlineKeyboardButton("* Стоимость ПДП *", callback_data="*")).row().add(
+            InlineKeyboardButton("🤩 Стоимость ПДП", callback_data=editing_callback_data.new(option='subscriber_cost', category='')),
+        )
+
         markup.add(InlineKeyboardButton("* Специалисты по TG *", callback_data="*")).row().add(
             InlineKeyboardButton("👥 Манаги", callback_data=editing_callback_data.new(option='spec', category='managers')),
             InlineKeyboardButton("👥 Закупщики", callback_data=editing_callback_data.new(option='spec', category='buyers')),
@@ -53,6 +68,11 @@ class Keyboards:
             InlineKeyboardButton("👥 Контентщики", callback_data=editing_callback_data.new(option='spec', category='content_makers')),
             InlineKeyboardButton("👥 Креативщики", callback_data=editing_callback_data.new(option='spec', category='creative')),
         )
+
+        markup.add(InlineKeyboardButton("* Поиск сотрудников *", callback_data="*")).row().add(
+            InlineKeyboardButton("🔎 Поиск сотрудников", callback_data=editing_callback_data.new(option='employees_search', category='')),
+        )
+
         markup.add(InlineKeyboardButton("* Полезные боты *", callback_data="*")).row().add(
             InlineKeyboardButton("💭 Для чатов", callback_data=editing_callback_data.new(option='bots', category='chatbots')),
             InlineKeyboardButton("📢 Для постинга", callback_data=editing_callback_data.new(option='bots', category='posting')),
@@ -60,17 +80,15 @@ class Keyboards:
             InlineKeyboardButton("💸 Для закупа", callback_data=editing_callback_data.new(option='bots', category='purchases')),
             InlineKeyboardButton("🧑‍💻 Для обратной связи", callback_data=editing_callback_data.new(option='bots', category='feedbacks')),
         )
-        markup.add(InlineKeyboardButton("* Биржи *", callback_data="*")).row().add(
-            InlineKeyboardButton("👷‍♂️ Биржи по продаже каналов", callback_data=editing_callback_data.new(option='stock_markets', category=''))
-        )
-        markup.add(InlineKeyboardButton("* Чаты *", callback_data="*")).row().add(
-            InlineKeyboardButton("💵 Покупка", callback_data=editing_callback_data.new(option='chats', category='purchases')),
-            InlineKeyboardButton("💶 Продажа", callback_data=editing_callback_data.new(option='chats', category='sell')),
-            InlineKeyboardButton("🚨 Админские чаты", callback_data=editing_callback_data.new(option='chats', category='admin')),
-        )
+
         markup.add(InlineKeyboardButton("* Полезные блоги *", callback_data="*")).row().add(
             InlineKeyboardButton("📌 Полезные блоги", callback_data=editing_callback_data.new(option='blogs', category=''))
         )
+
+        markup.add(InlineKeyboardButton("* Биржи *", callback_data="*")).row().add(
+            InlineKeyboardButton("💹 Биржи по продаже каналов", callback_data=editing_callback_data.new(option='stock_markets', category=''))
+        )
+
         return markup
 
 
@@ -121,6 +139,10 @@ class Handlers:
                 await rewrite_txt_file(Config.TxtFilePath.STOCK_MARKET, new_text=message_text)
             case 'welcome_post':
                 await rewrite_txt_file(Config.TxtFilePath.WELCOME_POST, new_text=message_text)
+            case 'subscriber_cost':
+                await rewrite_txt_file(Config.TxtFilePath.SUBSCRIBER_COST, new_text=message_text)
+            case 'employees_search':
+                await rewrite_txt_file(Config.TxtFilePath.EMPLOYEES_SEARCH, new_text=message_text)
 
         await message.answer('✅ Данные обновлены')
         await state.finish()
