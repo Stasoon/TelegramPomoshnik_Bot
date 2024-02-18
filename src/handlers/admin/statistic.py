@@ -3,6 +3,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup, Message, CallbackQuery
 from aiogram.utils.callback_data import CallbackData
 
+from src.database import user
 from src.misc.admin_states import StatsGetting
 from src.database.user import get_users_total_count, get_users_by_hours
 
@@ -19,7 +20,6 @@ class Keyboards:
         InlineKeyboardButton(text='Неделя', callback_data=statistic_callback_data.new('week')),
         InlineKeyboardButton(text='Сутки', callback_data=statistic_callback_data.new('day')),
         InlineKeyboardButton(text='Час', callback_data=statistic_callback_data.new('hour')),
-        InlineKeyboardButton(text='🔃 Всё время', callback_data=statistic_callback_data.new('all_time')),
         InlineKeyboardButton(text='⌨ Другое количество', callback_data=statistic_callback_data.new('other')),
     )
 
@@ -31,7 +31,9 @@ class Keyboards:
 class Messages:
     @staticmethod
     def get_menu():
-        return '📊 Выберите, за какой промежуток времени просмотреть статистику:'
+        return f'🌐 Пользователей онлайн: {user.get_online_users_count()} \n' \
+               f'👥 Всего пользователей: {user.get_users_total_count()} \n\n' \
+               f'📊 Выберите, за какой промежуток времени просмотреть статистику:'
 
     @staticmethod
     def get_count_per_hours(time_word: str, hours: int):
@@ -106,5 +108,8 @@ class Handlers:
             cls.__handle_get_hours_message,
             is_admin=True, state=StatsGetting.wait_for_hours_count
         )
+
+
+
 
 

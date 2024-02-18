@@ -22,5 +22,8 @@ class Config:
         SUBSCRIBER_COST: Final = f'{__directory_path}/subscriber_cost.txt'
         STOCK_MARKET: Final = f'{__directory_path}/stock_markets.txt'
         BLOGS: Final = f'{__directory_path}/useful_blogs.txt'
+        TERMS: Final = f'{__directory_path}/terms.txt'
+        EMPLOYEES_SEARCH = f'{__directory_path}/employes_search.txt'
+        CPM = f'{__directory_path}/cpm_photo_file_id.txt'
 
     DEBUG: Final = bool(os.getenv('DEBUG'))

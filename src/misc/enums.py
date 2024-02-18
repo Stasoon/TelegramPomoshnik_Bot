@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class UsefulBotsCategory(Enum):
+    WELCOME = 'welcome'
     CHATBOTS = 'chatbots'
     POSTING = 'posting'
     CLEANING = 'cleaning'
@@ -17,3 +18,4 @@ class SpecialistCategory(Enum):
     GUARANTORS = 'guarantors'
     CONTENT_MAKERS = 'content_makers'
     CREATIVE = 'creative'
+

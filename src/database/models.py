@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from peewee import Model, SqliteDatabase, IntegerField, DateTimeField, CharField
 
 
@@ -24,7 +26,8 @@ class User(_BaseModel):
 
     name = CharField(default='Пользователь')
     telegram_id = IntegerField(unique=True, null=False)
-    registration_timestamp = DateTimeField()
+    registration_timestamp = DateTimeField(default=datetime.now)
+    last_activity = DateTimeField(default=datetime.now)
     referral_link = CharField(null=True)
 
 
@@ -48,3 +51,4 @@ class Channel(_BaseModel):
 def register_models() -> None:
     for model in _BaseModel.__subclasses__():
         model.create_table()
+

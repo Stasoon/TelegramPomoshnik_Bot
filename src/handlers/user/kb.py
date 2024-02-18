@@ -52,6 +52,9 @@ class Keyboards:
 
         markup.add(
             InlineKeyboardButton(
+                "👋 Приветственный", callback_data=bots_nav_callback.new(category=UsefulBotsCategory.WELCOME.value)
+            ),
+            InlineKeyboardButton(
                 "💭 Для чата", callback_data=bots_nav_callback.new(category=UsefulBotsCategory.CHATBOTS.value)
             ),
             InlineKeyboardButton(
@@ -100,4 +103,5 @@ class Keyboards:
     def get_back_to_specialists_categories() -> InlineKeyboardMarkup:
         return InlineKeyboardMarkup() \
             .add(InlineKeyboardButton(text="🔙 Назад 🔙", callback_data=specialists_nav_callback.new(category='all')))
+
 
